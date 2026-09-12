@@ -1,0 +1,11 @@
+.venv/
+.venv-workers/
+python_modules/
+.wrangler/
+node_modules/
+frontend/node_modules/
+frontend/dist/
+src/core/
+src/bundled.py
+runtime/
+__pycache__/

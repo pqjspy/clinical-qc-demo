@@ -1,0 +1,108 @@
+{
+  "schema_version": "m1-v1", "synthetic": true,
+  "usage": "demonstration_fixtures_not_independent_evaluation",
+  "results": [
+    {
+      "case_id": "QC002", "scenario_group": "pk-below-minimum", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [{"finding_id": "QC002-F1", "l3_id": "L3-PK-001", "risk": "中", "suggested_decision": "方案偏离", "record_quotes": ["采血时间为10:06，开始离心时间为10:33"], "rule_keys": ["SYN-RULE-PK-001@1"], "requires_human_review": true}],
+      "relevant_rule_keys": ["SYN-RULE-PK-001@1"], "record_quotes": ["同一份PK样本的采血时间为10:06，开始离心时间为10:33"], "missing_facts": [],
+      "explanation": "本虚拟研究v1要求至少30分钟；同一份样本间隔27分钟，不足3分钟。此为题目样例的合成预期，不是模型执行结果。",
+      "review_required": true, "triage_priority": "routine",
+      "arithmetic_checks": [{"operation": "elapsed_minutes", "operands": {"start": "2026-09-01T10:06:00+08:00", "end": "2026-09-01T10:33:00+08:00"}, "expected_value": 27, "note": "27 < 30；时间含日期与时区。"}]
+    },
+    {
+      "case_id": "DEMO-VISIT-01", "scenario_group": "visit-window-outside", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [{"finding_id": "VISIT-F1", "l3_id": "L3-VISIT-001", "risk": "中", "suggested_decision": "需人工判定", "record_quotes": ["研究起始日为2026-08-01，定义为第1天", "实际于2026-09-06完成"], "rule_keys": ["SYN-RULE-VISIT-001@1"], "requires_human_review": true}],
+      "relevant_rule_keys": ["SYN-RULE-VISIT-001@1"], "record_quotes": ["计划的第28天访视实际于2026-09-06完成"], "missing_facts": [],
+      "explanation": "2026-08-01计第1天，2026-09-06为第37天；虚拟窗口第21至35天，晚于最晚允许日期2天。是否认定偏离仍待人工。",
+      "review_required": true, "triage_priority": "routine",
+      "arithmetic_checks": [{"operation": "visit_day", "operands": {"anchor_date": "2026-08-01", "actual_visit_date": "2026-09-06", "anchor_day_number": 1}, "expected_value": 37, "note": "以日期差36加起始编号1，不误把起始日计为第0天。"}]
+    },
+    {
+      "case_id": "DEMO-AE-01", "scenario_group": "ae-explicit-omission", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [{"finding_id": "AE-F1", "l3_id": "L3-AE-001", "risk": "高", "suggested_decision": "需人工判定", "record_quotes": ["事件SYN-EVT-004已写入原始观察记录", "已核对截至当日12:00的完整AE登记台账，未找到该事件的对应登记", "紧急线索标志为是"], "rule_keys": ["SYN-RULE-AE-001@1"], "requires_human_review": true}],
+      "relevant_rule_keys": ["SYN-RULE-AE-001@1"], "record_quotes": ["已核对截至当日12:00的完整AE登记台账，未找到该事件的对应登记"], "missing_facts": [],
+      "explanation": "本例明确提供完整台账核对结论，并非因为没上传台账而推断漏记。高风险是虚拟规则的优先复核策略，不评价恶心本身的医学严重程度。",
+      "review_required": true, "triage_priority": "priority", "arithmetic_checks": []
+    },
+    {
+      "case_id": "DEMO-DRUG-01", "scenario_group": "drug-inventory-mismatch", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [{"finding_id": "DRUG-F1", "l3_id": "L3-DRUG-001", "risk": "中", "suggested_decision": "需人工判定", "record_quotes": ["期初100，入库20，发出15，经核准重新入库的退回量5，期末盘点108"], "rule_keys": ["SYN-RULE-DRUG-001@1"], "requires_human_review": true}],
+      "relevant_rule_keys": ["SYN-RULE-DRUG-001@1"], "record_quotes": ["上述字段均已提供且属于同一核对期间"], "missing_facts": [],
+      "explanation": "本演示规定期末应为100+20-15+5=110片，盘点108片，相差2片；仅提示核对，不推断遗失、误用或实际患者风险。",
+      "review_required": true, "triage_priority": "routine",
+      "arithmetic_checks": [{"operation": "inventory_closing", "operands": {"opening": 100, "received": 20, "dispensed": 15, "returned_to_stock": 5}, "expected_value": 110, "note": "返回量只含已经核准重新入库的数量；不是任意退药都可再入库。"}]
+    },
+    {
+      "case_id": "DEMO-ROLE-01", "scenario_group": "authorization-expired", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [{"finding_id": "ROLE-F1", "l3_id": "L3-ROLE-001", "risk": "高", "suggested_decision": "需人工判定", "record_quotes": ["SYN-STAFF-005于2026-09-01 09:00执行采血", "终点为2026-09-01 00:00，终点不包含在授权区间内", "无后续授权记录"], "rule_keys": ["SYN-RULE-ROLE-001@1"], "requires_human_review": true}],
+      "relevant_rule_keys": ["SYN-RULE-ROLE-001@1"], "record_quotes": ["此人的完整授权记录显示，可执行操作为采血"], "missing_facts": [],
+      "explanation": "主体和操作匹配，但操作时间已超过明确的授权终点；按虚拟授权规则高风险转交。不推断真实人员资质或最终合规结论。",
+      "review_required": true, "triage_priority": "priority", "arithmetic_checks": []
+    },
+    {
+      "case_id": "DEMO-EDC-01", "scenario_group": "aligned-source-edc-mismatch", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [{"finding_id": "EDC-F1", "l3_id": "L3-EDC-001", "risk": "中", "suggested_decision": "需人工判定", "record_quotes": ["原始记录为37.2摄氏度，EDC记录为38.2摄氏度", "两者的受试者、字段、采集时点和单位均已对齐"], "rule_keys": ["SYN-RULE-EDC-001@1"], "requires_human_review": true}],
+      "relevant_rule_keys": ["SYN-RULE-EDC-001@1"], "record_quotes": ["原始记录为37.2摄氏度，EDC记录为38.2摄氏度"], "missing_facts": [],
+      "explanation": "同一字段/对象/时点/单位下值不同，提示一致性问题，不自行判断哪一方正确，也不从体温给出诊断。",
+      "review_required": true, "triage_priority": "routine", "arithmetic_checks": []
+    },
+    {
+      "case_id": "DEMO-BOUNDARY-01", "scenario_group": "pk-inclusive-boundary", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "no_finding_for_checked_rule", "findings": [], "relevant_rule_keys": ["SYN-RULE-PK-001@1"],
+      "record_quotes": ["同一份PK样本采血于10:06，开始离心于10:36", "本次仅检查采血至开始离心的时间间隔"], "missing_facts": [],
+      "explanation": "间隔正好30分钟，满足本条最低时间要求，不输出违规L3或低风险违规标签；不宣称整个研究合规。",
+      "review_required": true, "triage_priority": "routine",
+      "arithmetic_checks": [{"operation": "elapsed_minutes", "operands": {"start": "2026-09-01T10:06:00+08:00", "end": "2026-09-01T10:36:00+08:00"}, "expected_value": 30, "note": "30 >= 30；等号边界满足要求。"}]
+    },
+    {
+      "case_id": "DEMO-MISSING-01", "scenario_group": "pk-missing-time", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "needs_information", "findings": [], "relevant_rule_keys": ["SYN-RULE-PK-001@1"],
+      "record_quotes": ["送审材料未提供开始离心时间", "提交时间不是开始离心时间"], "missing_facts": ["centrifuged_at"],
+      "explanation": "请求补充同一样本的开始离心时间。不得把12:00的记录提交时间当作离心时间，也不能默认规则通过或时间不足。",
+      "review_required": true, "triage_priority": "routine", "arithmetic_checks": []
+    },
+    {
+      "case_id": "DEMO-MULTI-01", "scenario_group": "pk-and-ae-two-findings", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "proposed_findings",
+      "findings": [
+        {"finding_id": "MULTI-F1", "l3_id": "L3-PK-001", "risk": "中", "suggested_decision": "方案偏离", "record_quotes": ["同一份PK样本采血于10:06，开始离心于10:33"], "rule_keys": ["SYN-RULE-PK-001@1"], "requires_human_review": true},
+        {"finding_id": "MULTI-F2", "l3_id": "L3-AE-001", "risk": "高", "suggested_decision": "需人工判定", "record_quotes": ["事件SYN-EVT-009已写入原始观察记录", "已核对截至12:00的完整AE登记台账，未找到该事件的对应登记，紧急线索标志为是"], "rule_keys": ["SYN-RULE-AE-001@1"], "requires_human_review": true}
+      ],
+      "relevant_rule_keys": ["SYN-RULE-PK-001@1", "SYN-RULE-AE-001@1"],
+      "record_quotes": ["同一份PK样本采血于10:06，开始离心于10:33", "未找到该事件的对应登记，紧急线索标志为是"], "missing_facts": [],
+      "explanation": "必须保留样本时间不足和AE漏记两个问题项。AE高风险提示不能被样本中风险或只处理第一项所掩盖。风险仅按合成策略。",
+      "review_required": true, "triage_priority": "priority",
+      "arithmetic_checks": [{"operation": "elapsed_minutes", "operands": {"start": "2026-09-01T10:06:00+08:00", "end": "2026-09-01T10:33:00+08:00"}, "expected_value": 27, "note": "此算术只检查样本问题，不代替AE检查。"}]
+    },
+    {
+      "case_id": "DEMO-CONFLICT-01", "scenario_group": "overlapping-rules-conflict", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "rule_conflict", "findings": [],
+      "relevant_rule_keys": ["SYN-RULE-PK-CONFLICT-A@1", "SYN-RULE-PK-CONFLICT-B@1"],
+      "record_quotes": ["同一份PK样本采血于北京时间10:06，开始离心于10:33"], "missing_facts": [],
+      "explanation": "同一适用范围存在最低30分钟与最低20分钟两条互斥策略，且无批准的优先/替代关系。27分钟对两条规则结果不同；必须报告规则冲突，不私选有利规则、不自动确认L3。",
+      "review_required": true, "triage_priority": "priority",
+      "arithmetic_checks": [{"operation": "elapsed_minutes", "operands": {"start": "2026-09-01T10:06:00+08:00", "end": "2026-09-01T10:33:00+08:00"}, "expected_value": 27, "note": "算术可算，适用的唯一阈值未能确定，不能自动作出分类结论。"}]
+    },
+    {
+      "case_id": "DEMO-UNKNOWN-01", "scenario_group": "unsupported-office-issue", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "out_of_scope", "findings": [], "relevant_rule_keys": [],
+      "record_quotes": ["研究办公区打印机无法连接无线网络"], "missing_facts": [],
+      "explanation": "该办公网络故障不属于当前六类合成QC规则，保留超范围状态，不能编造L3或把它映射成授权问题。",
+      "review_required": true, "triage_priority": "routine", "arithmetic_checks": []
+    },
+    {
+      "case_id": "DEMO-AMBIGUOUS-01", "scenario_group": "conflicting-fact-sources", "basis": "authored_synthetic_expectation_not_model_prediction",
+      "status": "ambiguous_evidence", "findings": [], "relevant_rule_keys": ["SYN-RULE-PK-001@1"],
+      "record_quotes": ["纸质操作记录的开始离心时间是10:33，离心台账记为10:36", "两份来源均未作废，未确定哪一个正确"], "missing_facts": ["verified_centrifuged_at"],
+      "explanation": "存在两个有效性未决的时间来源，一个会得到27分钟，另一个30分钟。保留两份来源并请求核实；这不是EDC不一致场景，也不能随意选一个时间。",
+      "review_required": true, "triage_priority": "priority", "arithmetic_checks": []
+    }
+  ]
+}

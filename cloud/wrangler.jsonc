@@ -1,0 +1,21 @@
+{
+  "name": "clinical-qc-public-demo",
+  "account_id": "0c2da4cb492fbc3c7e75d3d6abb8a169",
+  "main": "src/entry.py",
+  "compatibility_date": "2026-09-11",
+  "compatibility_flags": ["python_workers"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./frontend/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "ai": {"binding": "AI"},
+  "d1_databases": [{
+    "binding": "DB", "database_name": "clinical-qc-public-demo-db",
+    "database_id": "37d4d3a5-3768-48c8-8e62-d68434297822", "migrations_dir": "migrations"
+  }],
+  "observability": {"enabled": false}
+}

@@ -1,0 +1,20 @@
+[
+ {"case_id":"E001","scenario_group":"eval-morning-pk","issues":[{"anchor":"采血于08:02","family":"pk","status":"proposed_findings","l3_id":"L3-PK-001","risk":"中"}],"priority":false},
+ {"case_id":"E002","scenario_group":"eval-early-visit","issues":[{"anchor":"计划的第28天访视","family":"visit","status":"proposed_findings","l3_id":"L3-VISIT-001","risk":"中"}],"priority":false},
+ {"case_id":"E003","scenario_group":"eval-nonurgent-ae","issues":[{"anchor":"报告头晕","family":"ae","status":"proposed_findings","l3_id":"L3-AE-001","risk":"高"}],"priority":true},
+ {"case_id":"E004","scenario_group":"eval-ampoule-ledger","issues":[{"anchor":"期末盘点71","family":"drug","status":"proposed_findings","l3_id":"L3-DRUG-001","risk":"中"}],"priority":false},
+ {"case_id":"E005","scenario_group":"eval-wrong-operation","issues":[{"anchor":"执行发药","family":"role","status":"proposed_findings","l3_id":"L3-ROLE-001","risk":"高"}],"priority":true},
+ {"case_id":"E006","scenario_group":"eval-transposed-pulse","issues":[{"anchor":"采集的脉搏","family":"edc","status":"proposed_findings","l3_id":"L3-EDC-001","risk":"中"}],"priority":false},
+ {"case_id":"E007","scenario_group":"eval-earliest-window","issues":[{"anchor":"计划的第28天访视","family":"visit","status":"no_finding_for_checked_rule","l3_id":null,"risk":"不适用"}],"priority":false},
+ {"case_id":"E008","scenario_group":"eval-ae-present","issues":[{"anchor":"报告咳嗽","family":"ae","status":"no_finding_for_checked_rule","l3_id":null,"risk":"不适用"}],"priority":false},
+ {"case_id":"E009","scenario_group":"eval-authorized-start-boundary","issues":[{"anchor":"执行采血","family":"role","status":"no_finding_for_checked_rule","l3_id":null,"risk":"不适用"}],"priority":false},
+ {"case_id":"E010","scenario_group":"eval-version-pair","issues":[{"anchor":"采血于23:20","family":"pk","status":"proposed_findings","l3_id":"L3-PK-001","risk":"中"}],"priority":false},
+ {"case_id":"E011","scenario_group":"eval-version-pair","issues":[{"anchor":"采血于00:10","family":"pk","status":"no_finding_for_checked_rule","l3_id":null,"risk":"不适用"}],"priority":false},
+ {"case_id":"E012","scenario_group":"eval-partial-edc-drug","issues":[{"anchor":"退回可用库存数量未提供","family":"drug","status":"needs_information","l3_id":null,"risk":"待定"},{"anchor":"采集的体温","family":"edc","status":"proposed_findings","l3_id":"L3-EDC-001","risk":"中"}],"priority":true},
+ {"case_id":"E013","scenario_group":"eval-urgent-unknown-register","issues":[{"anchor":"报告恶心","family":"ae","status":"needs_information","l3_id":null,"risk":"待定"}],"priority":true},
+ {"case_id":"E014","scenario_group":"eval-conflicting-policies","issues":[{"anchor":"采血于21:00","family":"pk","status":"rule_conflict","l3_id":null,"risk":"待定"}],"priority":true},
+ {"case_id":"E015","scenario_group":"eval-two-valid-sources","issues":[{"anchor":"采血于09:00","family":"pk","status":"ambiguous_evidence","l3_id":null,"risk":"待定"}],"priority":true},
+ {"case_id":"E016","scenario_group":"eval-facility-repair","issues":[{"anchor":"门锁损坏","family":"unknown","status":"out_of_scope","l3_id":null,"risk":"待定"}],"priority":true},
+ {"case_id":"E017","scenario_group":"eval-pk-ae-combined","issues":[{"anchor":"采血于16:00","family":"pk","status":"proposed_findings","l3_id":"L3-PK-001","risk":"中"},{"anchor":"报告头痛","family":"ae","status":"proposed_findings","l3_id":"L3-AE-001","risk":"高"}],"priority":true},
+ {"case_id":"E018","scenario_group":"eval-inventory-authority-combined","issues":[{"anchor":"期末盘点18","family":"drug","status":"proposed_findings","l3_id":"L3-DRUG-001","risk":"中"},{"anchor":"执行体温测量","family":"role","status":"proposed_findings","l3_id":"L3-ROLE-001","risk":"高"}],"priority":true}
+]

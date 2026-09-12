@@ -1,0 +1,529 @@
+{
+  "version": "m4-v1",
+  "frozen_at": "2026-09-10T06:16:40.913927+00:00",
+  "files": {
+    "src/clinical_qc_demo/contracts.py": "c0b248709a29687e50314b8ca23f33fe87417ee2918dc8da7eb6f73ce5602be7",
+    "src/clinical_qc_demo/data.py": "c7a39644d18f3725ac9a3bc8c1d811e7a10fc679fb1a5d3bcf98dfad446442f3",
+    "src/clinical_qc_demo/local_model.py": "77ceb0d1353dd4eb153b8e30670db251bebcb11ce30e49a2ed2700f26af42f29",
+    "src/clinical_qc_demo/retrieval.py": "389d3d083973696c81828b6649387677db5c5213ac4ea8a61a199e54ad452026",
+    "src/clinical_qc_demo/workflow.py": "0a730e73111133d62ac0595c478785d003584b1d14c762254db746477cd841cc",
+    "src/clinical_qc_demo/m2_contracts.py": "9223f0ef1e870016b4f3f73c25f31ff64d2eda1f40fe18416bcfb24254fac3d3",
+    "src/clinical_qc_demo/pk_check.py": "d522af0e9f618e8b9aee1bfbb4d1d3b4d1b639758d5d817a44f81fcac43de5ee",
+    "src/clinical_qc_demo/m4_engine.py": "9e6eb4e359552a0b68e36d26b6a5180f66ee9fed0279688595d5085ec87ab0be",
+    "src/clinical_qc_demo/m4_workflow.py": "4438ef9f6eb272eb0a2527fed260a0565fc280bdde3c7b061940bf5c0a39053a",
+    "src/clinical_qc_demo/m4_evaluation.py": "613d5229023b7b96e9b770690737beac40a386f35c75d4fd55cc7bc73a1933fd",
+    "scripts/evaluate_m4.py": "eb90833887b446741d1a93fd362891ca68759a2fcfacb63ae69db8f4304f4b28",
+    "data/evaluation/m4_v1/inputs.json": "686cebc9cb0a03f0c95209710400bd7bd466e9b47c7179648c6da0b72dff3d73",
+    "data/evaluation/m4_v1/references.json": "d60f5ed52010a9ff0308ba949e26de52aafba0457247f2924017a6f6104fb2f7",
+    "data/evaluation/m4_v1/PROTOCOL.md": "470a0c22ce4e0cdb8131ad615d60762d901eaa6f9a848b7f67eb1246278e40c9",
+    "data/knowledge/protocols.json": "c40434c8d8d6168eb1516e5cf1c7435f07f1168f455e47f6f7d1322a67b713d1",
+    "data/knowledge/rules.json": "e83c328ff38bdfe55d3a8e206f36502f0ed449cf27ed73f31bb6c45dc56864b9",
+    "data/knowledge/taxonomy.json": "c5da4a95bd4fc5b0562c92c1a5ec70ee79d5476809abbc03537334b01bf223a2"
+  },
+  "model": {
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "size": 2497293803,
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3",
+      "families": [
+        "qwen3"
+      ],
+      "parameter_size": "4.0B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 262144,
+      "embedding_length": 2560
+    },
+    "ollama_version": "0.32.4",
+    "base_url": "http://127.0.0.1:11434",
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 12288,
+      "num_predict": 2600
+    }
+  },
+  "knowledge": {
+    "taxonomy": {
+      "schema_version": "m1-v1",
+      "synthetic": true,
+      "taxonomy_id": "SYN-TAXONOMY-v1",
+      "paths": [
+        {
+          "l3_id": "L3-PK-001",
+          "l1": "样本管理",
+          "l2": "PK 样本管理",
+          "l3": "样本处理时间不足",
+          "l4_candidates": [
+            {
+              "l4_id": "L4-PK-001-A",
+              "label": "采血至开始离心间隔小于本虚拟方案最小值"
+            }
+          ],
+          "description": "仅在同一样本、两个时间明确且适用方案给出最小间隔时判断；这不是一般临床操作要求。"
+        },
+        {
+          "l3_id": "L3-VISIT-001",
+          "l1": "试验实施",
+          "l2": "访视管理",
+          "l3": "访视超窗",
+          "l4_candidates": [
+            {
+              "l4_id": "L4-VISIT-001-A",
+              "label": "实际访视日超出本虚拟方案闭区间窗口"
+            }
+          ],
+          "description": "按明确的锚点日与日号计算实际访视日；不从缺失日期推断超窗。"
+        },
+        {
+          "l3_id": "L3-AE-001",
+          "l1": "安全性管理",
+          "l2": "不良事件记录",
+          "l3": "不良事件漏记",
+          "l4_candidates": [
+            {
+              "l4_id": "L4-AE-001-A",
+              "label": "已确认事件在完整核对的指定登记册中缺失"
+            }
+          ],
+          "description": "事件存在、登记册完整和该条目不存在必须都已明确；未提供登记册不等于漏记。"
+        },
+        {
+          "l3_id": "L3-DRUG-001",
+          "l1": "试验用药管理",
+          "l2": "库存与台账管理",
+          "l3": "试验用药账物不一致",
+          "l4_candidates": [
+            {
+              "l4_id": "L4-DRUG-001-A",
+              "label": "同一结算期间期末实盘与约定库存公式不一致"
+            }
+          ],
+          "description": "只比较同一虚拟药品、中心、计量单位与结算期间的完整非负整数数量。"
+        },
+        {
+          "l3_id": "L3-ROLE-001",
+          "l1": "人员管理",
+          "l2": "授权与职责管理",
+          "l3": "操作超出授权范围",
+          "l4_candidates": [
+            {
+              "l4_id": "L4-ROLE-001-A",
+              "label": "操作人、操作范围或操作时点不满足有效授权"
+            }
+          ],
+          "description": "必须核实同一操作人与其授权；授权缺失或范围不明确时需补充，不猜测其资质。"
+        },
+        {
+          "l3_id": "L3-EDC-001",
+          "l1": "数据管理",
+          "l2": "原始记录与 EDC 一致性",
+          "l3": "原始记录与 EDC 数据不一致",
+          "l4_candidates": [
+            {
+              "l4_id": "L4-EDC-001-A",
+              "label": "对齐主体、字段、时点和单位后的记录值不一致"
+            }
+          ],
+          "description": "仅在两侧主体、字段、时点、单位对齐且值均明确时做精确比较；不自动换算单位。"
+        }
+      ]
+    },
+    "protocols": {
+      "schema_version": "m1-v1",
+      "synthetic": true,
+      "documents": [
+        {
+          "document_id": "SYN-DOC-PROTOCOL-001-v1",
+          "study_id": "SYN-STUDY-001",
+          "protocol_id": "SYN-PROTOCOL-001-v1",
+          "version": "1",
+          "effective_from": "2026-01-01T00:00:00+08:00",
+          "effective_to": "2026-10-01T00:00:00+08:00",
+          "sections": [
+            {
+              "section_id": "SEC-PK-001",
+              "text": "【合成演示规则，非临床操作指引】本虚拟研究规定，同一PK样本从采血到开始离心的时间间隔至少为30分钟。小于30分钟时，提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。恰好30分钟不命中这一条规则；时间不完整、来源冲突或无法确认同一样本时须补充信息，不能自动通过。建议由负责人员确认样本是否被中心实验室接受，并评估检测结果是否有效。"
+            },
+            {
+              "section_id": "SEC-VISIT-001",
+              "text": "【合成演示规则，非临床操作指引】本虚拟研究将锚点日期记为第1天，第28天访视允许提前7天或延后7天，即实际访视日号在第21天至第35天之间，两个端点均包含。实际访视日号＝实际访视日期与锚点日期的自然日差＋1。超出此窗口时提示“访视超窗”，建议风险为中，建议判定为需人工判定，须人工复核。缺少锚点、实际日期或日号定义时不作超窗结论。建议复核访视日期来源与适用方案窗口，并记录原因。"
+            },
+            {
+              "section_id": "SEC-AE-001",
+              "text": "【合成演示规则，非临床操作指引】对本虚拟研究指定的不良事件登记册，只有同时明确“事件已发生”“已完整核对相关登记册”“该事件条目不存在”时，才提示“不良事件漏记”。未提供登记册或未完整核对，不等于漏记。命中时建议风险为高，建议判定为需人工判定，须人工复核并在本地工作台优先转交。urgent_flag只是案例提供的紧急线索，不由模型推断医学严重程度；这一高风险策略仅服务本演示。建议交由负责安全性记录的人员复核并补充缺失资料，不自动作医学处置。"
+            },
+            {
+              "section_id": "SEC-DRUG-001",
+              "text": "【合成演示规则，非临床操作指引】本虚拟研究对同一药品、中心、单位和结算期间采用：期末应有库存＝期初库存＋本期入库－本期发放＋确认退回可用库存的数量。五项数量均须明确且为非负整数；退回数量只指已确认重新计入可用库存的数量，不是所有回收药品。期末实盘与公式不一致时提示“试验用药账物不一致”，建议风险为中，建议判定为需人工判定，须人工复核。建议核对发放、退回、入库与盘点凭证；缺少数量不按0处理。"
+            },
+            {
+              "section_id": "SEC-ROLE-001",
+              "text": "【合成演示规则，非临床操作指引】本虚拟研究要求核对操作人与授权所指人员为同一人，操作名称在明确的授权操作清单内，且操作时点处于授权生效时间至授权结束时间的半开区间内：包含生效时点，不包含结束时点。身份不一致、操作不在范围内或时点越界时提示“操作超出授权范围”，建议风险为高，建议判定为需人工判定，须人工复核并在本地工作台优先转交。未提供授权材料不是已确认无授权。建议核查人员授权表、授权有效期及实际操作记录，不自动判断人员医学资质。"
+            },
+            {
+              "section_id": "SEC-EDC-001",
+              "text": "【合成演示规则，非临床操作指引】本虚拟研究仅在原始记录和EDC记录的受试者、字段、采集时点及单位均一致，且两侧值明确时进行精确值比较，不自动换算单位。对齐后值不同则提示“原始记录与 EDC 数据不一致”，建议风险为中，建议判定为需人工判定，须人工复核。无法对齐、任一值缺失或来源有多种矛盾记载时转交补充资料。建议核查原始记录与EDC录入来源并保留更正轨迹，不自行选择哪一侧是正确值。"
+            }
+          ]
+        },
+        {
+          "document_id": "SYN-DOC-PROTOCOL-001-v2",
+          "study_id": "SYN-STUDY-001",
+          "protocol_id": "SYN-PROTOCOL-001-v2",
+          "version": "2",
+          "effective_from": "2026-10-01T00:00:00+08:00",
+          "effective_to": null,
+          "sections": [
+            {
+              "section_id": "SEC-PK-001",
+              "text": "【合成演示规则，非临床操作指引】从2026年10月1日00:00:00+08:00起，本虚拟研究的v2方案将同一PK样本采血至开始离心的最小间隔改为20分钟，替代v1的30分钟要求。小于20分钟时提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。恰好20分钟不命中这一条规则；该更新不得改写此前已保存的分析结果。建议由负责人员确认样本是否被中心实验室接受，并评估检测结果是否有效。本v2演示只提供PK条款，不推断其他问题存在适用规则。"
+            }
+          ]
+        },
+        {
+          "document_id": "SYN-DOC-PROTOCOL-CONFLICT-v1",
+          "study_id": "SYN-STUDY-CONFLICT",
+          "protocol_id": "SYN-PROTOCOL-CONFLICT-v1",
+          "version": "1",
+          "effective_from": "2026-01-01T00:00:00+08:00",
+          "effective_to": null,
+          "sections": [
+            {
+              "section_id": "SEC-PK-CONFLICT-A",
+              "text": "【合成冲突测试材料，禁止作为正常规则发布示例】冲突研究的条款A要求同一PK样本从采血至开始离心至少30分钟；不足时提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。建议先由规则管理员核对冲突来源。条款A与条款B具有完全相同的适用范围和有效期，未声明替代关系；冲突未解决前不能任选其中一条形成结论。"
+            },
+            {
+              "section_id": "SEC-PK-CONFLICT-B",
+              "text": "【合成冲突测试材料，禁止作为正常规则发布示例】冲突研究的条款B要求同一PK样本从采血至开始离心至少20分钟；不足时提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。建议先由规则管理员核对冲突来源。条款B与条款A具有完全相同的适用范围和有效期，未声明替代关系；冲突未解决前不能任选其中一条形成结论。"
+            }
+          ]
+        }
+      ]
+    },
+    "rules": {
+      "schema_version": "m1-v1",
+      "synthetic": true,
+      "rules": [
+        {
+          "rule_id": "SYN-RULE-PK-001",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": "2026-10-01T00:00:00+08:00"
+          },
+          "publication_status": "demo_approved",
+          "check_type": "elapsed_minimum",
+          "required_facts": [
+            "collected_at",
+            "centrifuged_at",
+            "same_sample"
+          ],
+          "parameters": {
+            "minimum_minutes": 30
+          },
+          "output_l3_id": "L3-PK-001",
+          "risk": "中",
+          "suggested_decision": "方案偏离",
+          "suggested_action": "建议由负责人员确认样本是否被中心实验室接受，并评估检测结果是否有效。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v1",
+            "section_id": "SEC-PK-001",
+            "quote": "【合成演示规则，非临床操作指引】本虚拟研究规定，同一PK样本从采血到开始离心的时间间隔至少为30分钟。小于30分钟时，提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。恰好30分钟不命中这一条规则；时间不完整、来源冲突或无法确认同一样本时须补充信息，不能自动通过。建议由负责人员确认样本是否被中心实验室接受，并评估检测结果是否有效。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-VISIT-001",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": "2026-10-01T00:00:00+08:00"
+          },
+          "publication_status": "demo_approved",
+          "check_type": "visit_window",
+          "required_facts": [
+            "anchor_date",
+            "actual_visit_date",
+            "anchor_day_number"
+          ],
+          "parameters": {
+            "target_day": 28,
+            "early_days": 7,
+            "late_days": 7,
+            "anchor_day_number": 1,
+            "boundary_inclusive": true
+          },
+          "output_l3_id": "L3-VISIT-001",
+          "risk": "中",
+          "suggested_decision": "需人工判定",
+          "suggested_action": "建议复核访视日期来源与适用方案窗口，并记录原因。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v1",
+            "section_id": "SEC-VISIT-001",
+            "quote": "【合成演示规则，非临床操作指引】本虚拟研究将锚点日期记为第1天，第28天访视允许提前7天或延后7天，即实际访视日号在第21天至第35天之间，两个端点均包含。实际访视日号＝实际访视日期与锚点日期的自然日差＋1。超出此窗口时提示“访视超窗”，建议风险为中，建议判定为需人工判定，须人工复核。缺少锚点、实际日期或日号定义时不作超窗结论。建议复核访视日期来源与适用方案窗口，并记录原因。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-AE-001",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": "2026-10-01T00:00:00+08:00"
+          },
+          "publication_status": "demo_approved",
+          "check_type": "explicit_absence",
+          "required_facts": [
+            "event_present",
+            "register_complete",
+            "entry_present",
+            "urgent_flag"
+          ],
+          "parameters": {
+            "required_register": "本虚拟研究指定的不良事件登记册"
+          },
+          "output_l3_id": "L3-AE-001",
+          "risk": "高",
+          "suggested_decision": "需人工判定",
+          "suggested_action": "建议交由负责安全性记录的人员复核并补充缺失资料，不自动作医学处置。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v1",
+            "section_id": "SEC-AE-001",
+            "quote": "【合成演示规则，非临床操作指引】对本虚拟研究指定的不良事件登记册，只有同时明确“事件已发生”“已完整核对相关登记册”“该事件条目不存在”时，才提示“不良事件漏记”。未提供登记册或未完整核对，不等于漏记。命中时建议风险为高，建议判定为需人工判定，须人工复核并在本地工作台优先转交。urgent_flag只是案例提供的紧急线索，不由模型推断医学严重程度；这一高风险策略仅服务本演示。建议交由负责安全性记录的人员复核并补充缺失资料，不自动作医学处置。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-DRUG-001",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": "2026-10-01T00:00:00+08:00"
+          },
+          "publication_status": "demo_approved",
+          "check_type": "inventory_balance",
+          "required_facts": [
+            "opening",
+            "received",
+            "dispensed",
+            "returned_to_stock",
+            "closing",
+            "inventory_scope_confirmed"
+          ],
+          "parameters": {
+            "formula": "opening + received - dispensed + returned_to_stock",
+            "quantity_type": "non_negative_integer",
+            "alignment_required": "同一药品、中心、单位和结算期间"
+          },
+          "output_l3_id": "L3-DRUG-001",
+          "risk": "中",
+          "suggested_decision": "需人工判定",
+          "suggested_action": "建议核对发放、退回、入库与盘点凭证；缺少数量不按0处理。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v1",
+            "section_id": "SEC-DRUG-001",
+            "quote": "【合成演示规则，非临床操作指引】本虚拟研究对同一药品、中心、单位和结算期间采用：期末应有库存＝期初库存＋本期入库－本期发放＋确认退回可用库存的数量。五项数量均须明确且为非负整数；退回数量只指已确认重新计入可用库存的数量，不是所有回收药品。期末实盘与公式不一致时提示“试验用药账物不一致”，建议风险为中，建议判定为需人工判定，须人工复核。建议核对发放、退回、入库与盘点凭证；缺少数量不按0处理。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-ROLE-001",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": "2026-10-01T00:00:00+08:00"
+          },
+          "publication_status": "demo_approved",
+          "check_type": "authorization",
+          "required_facts": [
+            "actor_id",
+            "authorized_actor_id",
+            "operation_at",
+            "authorized_from",
+            "authorized_to",
+            "operation",
+            "authorized_operations"
+          ],
+          "parameters": {
+            "authorization_interval": "[from,to)",
+            "require_same_actor": true
+          },
+          "output_l3_id": "L3-ROLE-001",
+          "risk": "高",
+          "suggested_decision": "需人工判定",
+          "suggested_action": "建议核查人员授权表、授权有效期及实际操作记录，不自动判断人员医学资质。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v1",
+            "section_id": "SEC-ROLE-001",
+            "quote": "【合成演示规则，非临床操作指引】本虚拟研究要求核对操作人与授权所指人员为同一人，操作名称在明确的授权操作清单内，且操作时点处于授权生效时间至授权结束时间的半开区间内：包含生效时点，不包含结束时点。身份不一致、操作不在范围内或时点越界时提示“操作超出授权范围”，建议风险为高，建议判定为需人工判定，须人工复核并在本地工作台优先转交。未提供授权材料不是已确认无授权。建议核查人员授权表、授权有效期及实际操作记录，不自动判断人员医学资质。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-EDC-001",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": "2026-10-01T00:00:00+08:00"
+          },
+          "publication_status": "demo_approved",
+          "check_type": "aligned_value_match",
+          "required_facts": [
+            "source_subject_id",
+            "edc_subject_id",
+            "source_field",
+            "edc_field",
+            "source_timepoint",
+            "edc_timepoint",
+            "source_unit",
+            "edc_unit",
+            "source_value",
+            "edc_value"
+          ],
+          "parameters": {
+            "comparison": "exact",
+            "require_alignment": true
+          },
+          "output_l3_id": "L3-EDC-001",
+          "risk": "中",
+          "suggested_decision": "需人工判定",
+          "suggested_action": "建议核查原始记录与EDC录入来源并保留更正轨迹，不自行选择哪一侧是正确值。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v1",
+            "section_id": "SEC-EDC-001",
+            "quote": "【合成演示规则，非临床操作指引】本虚拟研究仅在原始记录和EDC记录的受试者、字段、采集时点及单位均一致，且两侧值明确时进行精确值比较，不自动换算单位。对齐后值不同则提示“原始记录与 EDC 数据不一致”，建议风险为中，建议判定为需人工判定，须人工复核。无法对齐、任一值缺失或来源有多种矛盾记载时转交补充资料。建议核查原始记录与EDC录入来源并保留更正轨迹，不自行选择哪一侧是正确值。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-PK-001",
+          "version": "2",
+          "scope": {
+            "study_id": "SYN-STUDY-001",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-001-v2",
+            "effective_from": "2026-10-01T00:00:00+08:00",
+            "effective_to": null
+          },
+          "publication_status": "demo_approved",
+          "check_type": "elapsed_minimum",
+          "required_facts": [
+            "collected_at",
+            "centrifuged_at",
+            "same_sample"
+          ],
+          "parameters": {
+            "minimum_minutes": 20
+          },
+          "output_l3_id": "L3-PK-001",
+          "risk": "中",
+          "suggested_decision": "方案偏离",
+          "suggested_action": "建议由负责人员确认样本是否被中心实验室接受，并评估检测结果是否有效。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-001-v2",
+            "section_id": "SEC-PK-001",
+            "quote": "【合成演示规则，非临床操作指引】从2026年10月1日00:00:00+08:00起，本虚拟研究的v2方案将同一PK样本采血至开始离心的最小间隔改为20分钟，替代v1的30分钟要求。小于20分钟时提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。恰好20分钟不命中这一条规则；该更新不得改写此前已保存的分析结果。建议由负责人员确认样本是否被中心实验室接受，并评估检测结果是否有效。本v2演示只提供PK条款，不推断其他问题存在适用规则。"
+          },
+          "supersedes": [
+            "SYN-RULE-PK-001@1"
+          ]
+        },
+        {
+          "rule_id": "SYN-RULE-PK-CONFLICT-A",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-CONFLICT",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-CONFLICT-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": null
+          },
+          "publication_status": "demo_approved",
+          "check_type": "elapsed_minimum",
+          "required_facts": [
+            "collected_at",
+            "centrifuged_at",
+            "same_sample"
+          ],
+          "parameters": {
+            "minimum_minutes": 30
+          },
+          "output_l3_id": "L3-PK-001",
+          "risk": "中",
+          "suggested_decision": "方案偏离",
+          "suggested_action": "建议先由规则管理员核对冲突来源。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-CONFLICT-v1",
+            "section_id": "SEC-PK-CONFLICT-A",
+            "quote": "【合成冲突测试材料，禁止作为正常规则发布示例】冲突研究的条款A要求同一PK样本从采血至开始离心至少30分钟；不足时提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。建议先由规则管理员核对冲突来源。条款A与条款B具有完全相同的适用范围和有效期，未声明替代关系；冲突未解决前不能任选其中一条形成结论。"
+          },
+          "supersedes": []
+        },
+        {
+          "rule_id": "SYN-RULE-PK-CONFLICT-B",
+          "version": "1",
+          "scope": {
+            "study_id": "SYN-STUDY-CONFLICT",
+            "site_id": "SYN-SITE-A",
+            "protocol_id": "SYN-PROTOCOL-CONFLICT-v1",
+            "effective_from": "2026-01-01T00:00:00+08:00",
+            "effective_to": null
+          },
+          "publication_status": "demo_approved",
+          "check_type": "elapsed_minimum",
+          "required_facts": [
+            "collected_at",
+            "centrifuged_at",
+            "same_sample"
+          ],
+          "parameters": {
+            "minimum_minutes": 20
+          },
+          "output_l3_id": "L3-PK-001",
+          "risk": "中",
+          "suggested_decision": "方案偏离",
+          "suggested_action": "建议先由规则管理员核对冲突来源。",
+          "requires_human_review": true,
+          "source": {
+            "document_id": "SYN-DOC-PROTOCOL-CONFLICT-v1",
+            "section_id": "SEC-PK-CONFLICT-B",
+            "quote": "【合成冲突测试材料，禁止作为正常规则发布示例】冲突研究的条款B要求同一PK样本从采血至开始离心至少20分钟；不足时提示“样本处理时间不足”，建议风险为中，建议判定为方案偏离，须人工复核。建议先由规则管理员核对冲突来源。条款B与条款A具有完全相同的适用范围和有效期，未声明替代关系；冲突未解决前不能任选其中一条形成结论。"
+          },
+          "supersedes": []
+        }
+      ]
+    }
+  },
+  "knowledge_sha256": "88ee4093cdb37554e17542a36772e71596c780ab1eaf403b28ac240522142cdd",
+  "input_count": 18,
+  "reference_policy": "answers_read_by_scorer_only_after_predictions"
+}

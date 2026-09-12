@@ -1,0 +1,66 @@
+{
+  "schema_version": "m1-v1",
+  "synthetic": true,
+  "records": [
+    {
+      "case_id": "QC002", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T10:33:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01，SYN-SUBJ-002同一份PK样本的采血时间为10:06，开始离心时间为10:33，均为北京时间。请检查样本处理是否符合本研究方案。"
+    },
+    {
+      "case_id": "DEMO-VISIT-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-06T09:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】SYN-SUBJ-003的研究起始日为2026-08-01，定义为第1天。计划的第28天访视实际于2026-09-06完成。两个日期均按北京时间日历日记录，请核查是否在本研究访视窗口内。"
+    },
+    {
+      "case_id": "DEMO-AE-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T12:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】SYN-SUBJ-004于2026-09-01 09:00报告恶心，事件SYN-EVT-004已写入原始观察记录。已核对截至当日12:00的完整AE登记台账，未找到该事件的对应登记。紧急线索标志为是。时间均为北京时间。"
+    },
+    {
+      "case_id": "DEMO-DRUG-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T17:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01核对SYN-DRUG-001同一批次的收发存，单位均为片：期初100，入库20，发出15，经核准重新入库的退回量5，期末盘点108。上述字段均已提供且属于同一核对期间。"
+    },
+    {
+      "case_id": "DEMO-ROLE-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T09:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】SYN-STAFF-005于2026-09-01 09:00执行采血。此人的完整授权记录显示，可执行操作为采血；授权起点为2026-08-01 00:00，终点为2026-09-01 00:00，终点不包含在授权区间内。无后续授权记录。所有时间均为北京时间。"
+    },
+    {
+      "case_id": "DEMO-EDC-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T11:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】核对同一受试者SYN-SUBJ-006、第28天访视、2026-09-01 08:00采集的体温：原始记录为37.2摄氏度，EDC记录为38.2摄氏度。两者的受试者、字段、采集时点和单位均已对齐。"
+    },
+    {
+      "case_id": "DEMO-BOUNDARY-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T10:36:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01，SYN-SUBJ-007同一份PK样本采血于10:06，开始离心于10:36，均为北京时间。本次仅检查采血至开始离心的时间间隔。"
+    },
+    {
+      "case_id": "DEMO-MISSING-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T12:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01，SYN-SUBJ-008的PK样本采血时间为北京时间10:06。送审材料未提供开始离心时间，请核查样本处理时间间隔。记录提交时间为12:00，提交时间不是开始离心时间。"
+    },
+    {
+      "case_id": "DEMO-MULTI-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T12:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01，SYN-SUBJ-009同一份PK样本采血于10:06，开始离心于10:33。该受试者09:00报告恶心，事件SYN-EVT-009已写入原始观察记录；已核对截至12:00的完整AE登记台账，未找到该事件的对应登记，紧急线索标志为是。所有时间均为北京时间。请逐项检查，不要只处理样本问题。"
+    },
+    {
+      "case_id": "DEMO-CONFLICT-01", "study_id": "SYN-STUDY-CONFLICT", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-CONFLICT-v1",
+      "event_at": "2026-09-01T10:33:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01，SYN-SUBJ-010同一份PK样本采血于北京时间10:06，开始离心于10:33。请按当前研究已发布且适用的规则检查样本处理时间。"
+    },
+    {
+      "case_id": "DEMO-UNKNOWN-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T15:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】2026-09-01发现研究办公区打印机无法连接无线网络。请判断该办公设备故障如何处理。未提供受试者、访视、样本、药物、授权或EDC相关问题。"
+    },
+    {
+      "case_id": "DEMO-AMBIGUOUS-01", "study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1",
+      "event_at": "2026-09-01T12:00:00+08:00", "timezone": "Asia/Shanghai",
+      "text": "【合成虚拟记录】SYN-SUBJ-011同一份PK样本在2026-09-01的采血时间均记为10:06，但纸质操作记录的开始离心时间是10:33，离心台账记为10:36，两份来源均未作废，未确定哪一个正确。时间均为北京时间，请核查时间间隔。"
+    }
+  ]
+}

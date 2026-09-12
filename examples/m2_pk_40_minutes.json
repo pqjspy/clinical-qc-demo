@@ -1,0 +1,9 @@
+{
+  "case_id": "SYN-EXERCISE-40",
+  "study_id": "SYN-STUDY-001",
+  "site_id": "SYN-SITE-A",
+  "protocol_id": "SYN-PROTOCOL-001-v1",
+  "event_at": "2026-09-01T10:46:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "text": "【合成虚拟记录】2026-09-01，SYN-SUBJ-040同一份PK样本的采血时间为10:06，开始离心时间为10:46，均为北京时间。请检查样本处理是否符合本研究方案。"
+}
