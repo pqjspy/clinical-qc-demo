@@ -11,6 +11,7 @@ from pyodide.ffi import to_js
 from bundled import BUNDLE
 from cloud_flow import MODEL, KNOWLEDGE, KNOWLEDGE_HASH, BUNDLE_ID, canonical, digest, now, validate_record, analyze, decode
 from review import review_payload
+from semantic_retrieval import EMBEDDING_MODEL, RERANKER_MODEL, RETRIEVAL_VERSION
 
 SEEDS={c['case_id']:c for c in BUNDLE['cases']}
 COOKIE='qc_guest'
@@ -98,7 +99,9 @@ class Default(WorkerEntrypoint):
     async def route(self,request):
         url=urlsplit(str(request.url)); path=url.path; method=str(request.method)
         if path=='/api/health' and method=='GET':
-            return reply({'ok':True,'version':'cloud-v1','synthetic_only':True,'model':MODEL,'rules':len(KNOWLEDGE['rules']['rules'])})
+            return reply({'ok':True,'version':'cloud-rag-v2','synthetic_only':True,'model':MODEL,
+                'retrieval_version':RETRIEVAL_VERSION,'embedding_model':EMBEDDING_MODEL,'reranker_model':RERANKER_MODEL,
+                'rules':len(KNOWLEDGE['rules']['rules'])})
         if not path.startswith('/api/'): return Response('Not found',status=404)
         body=None
         if method=='POST':
@@ -153,7 +156,7 @@ class Default(WorkerEntrypoint):
             ip_hash=token_hash(t[:10]+'|'+(request.headers.get('CF-Connecting-IP') or 'local'))
             try:
                 await self.sql('INSERT INTO jobs(id,visitor_id,request_key,case_id,input,ip_hash,day,created_at,bundle_id,state,stage) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-                    jid,v['id'],key,record.case_id,canonical(source),ip_hash,t[:10],t,BUNDLE_ID,'running','qwen_decompose_issues')
+                    jid,v['id'],key,record.case_id,canonical(source),ip_hash,t[:10],t,BUNDLE_ID,'running','hybrid_rule_retrieval')
             except Exception:
                 previous=await self.sql('SELECT id,case_id FROM jobs WHERE visitor_id=? AND request_key=?',v['id'],key,first=True)
                 if previous and previous['case_id']==record.case_id: return reply({'id':previous['id'],'created':False})

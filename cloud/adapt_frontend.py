@@ -75,6 +75,14 @@ s=s.replace('''    const data = await response.json();''','''    const data = aw
 s=s.replace('''    const j = await api("/jobs", { case_id: form.case_id, request_key: uid() });''','''    setMessage('云端正在拆分问题并生成解释，通常需要几秒到几十秒。请保持页面打开；不会自动重试。');
     const j = await api("/jobs", { case_id: form.case_id, request_key: uid() });
     setMessage('分析已保存。请核对证据和 AI 解释草稿。');''')
+s='import RetrievalComparison from "./RetrievalComparison";\n'+s
+s=s.replace('  local_model_preflight:', '  hybrid_rule_retrieval: "正在进行向量检索、融合和重排",\n  local_model_preflight:')
+s=s.replace('''                      {result.issues?.length > 0 && (''', '''                      <RetrievalComparison trace={result.retrieval_augmented} />
+                      {result.issues?.length > 0 && (''')
+s=s.replace('云端正在拆分问题并生成解释，通常需要几秒到几十秒。', '云端正在检索、重排、拆分问题并生成解释，通常需要几秒到几十秒。')
+s=s.replace('抽取事实和组织解释分别调用模型，请稍候。不会自动换成预设答案。', '短记录另调用BGE-M3向量模型及BGE重排模型；Qwen负责分组与解释，不会自动换成预设答案。')
+s=s.replace('<li>真正调用云端 Qwen，显示程序计算与原文、规则证据。</li>', '<li>比较BM25、BGE-M3向量、RRF融合和BGE重排；将候选规则交给Qwen参考，程序独立检查。</li>')
+s=s.replace('单条最多 2400 字。', '单条最多 2400 字；256字以内启用四路检索比较，长记录明确保留原有BM25流程，不截断原文。')
 (DEST/'src'/'App.tsx').write_text(s)
 index=(DEST/'index.html').read_text().replace('本地合成质控记录分析','云端合成质控记录分析')
 (DEST/'index.html').write_text(index)

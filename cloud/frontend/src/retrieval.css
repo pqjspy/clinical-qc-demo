@@ -1,0 +1,256 @@
+.retrieval-comparison {
+  margin: 22px 0 14px;
+  padding: 16px;
+  border: 1px solid #d4e2e9;
+  border-radius: 8px;
+  background: #fbfdfe;
+  min-width: 0;
+}
+
+.retrieval-comparison > summary {
+  font-weight: 600;
+  line-height: 1.9;
+}
+
+.retrieval-comparison > summary:focus-visible,
+.retrieval-table-scroll:focus-visible {
+  outline: 3px solid #4faebc;
+  outline-offset: 3px;
+}
+
+.retrieval-status,
+.retrieval-selected-label {
+  display: inline-block;
+  margin-left: 9px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #e5f1f3;
+  color: #1d6670;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.retrieval-status-failed {
+  color: #932c2c;
+  background: #fff0ef;
+}
+
+.retrieval-note,
+.retrieval-table caption {
+  color: #657d8e;
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 10px 0;
+}
+
+.retrieval-usage {
+  padding: 9px 12px;
+  border-left: 3px solid #bf801d;
+  background: #fff8e8;
+  color: #775616;
+  font-size: 13px;
+}
+
+.retrieval-usage-applied {
+  border-left-color: #7397ac;
+  background: #edf7f8;
+  color: #1d6670;
+}
+
+.retrieval-query {
+  padding: 10px 13px;
+  background: #f1f6f8;
+  border-left: 3px solid #7397ac;
+  margin: 14px 0;
+  font-size: 13px;
+}
+
+.retrieval-query p {
+  white-space: pre-wrap;
+  margin: 5px 0 0;
+}
+
+.retrieval-alert {
+  padding: 10px 13px;
+  border: 1px solid #efbdba;
+  border-radius: 6px;
+  color: #932c2c;
+  background: #fff0ef;
+  font-size: 13px;
+}
+
+.retrieval-alert span {
+  display: block;
+  margin-top: 5px;
+  white-space: pre-wrap;
+}
+
+.retrieval-metadata {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 10px 16px;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.retrieval-metadata dt,
+.retrieval-model-list dt {
+  color: #657d8e;
+  font-size: 12px;
+}
+
+.retrieval-metadata dd,
+.retrieval-model-list dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.retrieval-table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 14px 0;
+  border: 1px solid #dfe8ee;
+  border-radius: 6px;
+}
+
+.retrieval-table {
+  min-width: 660px;
+  font-size: 13px;
+}
+
+.retrieval-table caption {
+  text-align: left;
+  caption-side: bottom;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+.retrieval-table th,
+.retrieval-table td {
+  padding: 10px 11px;
+}
+
+.retrieval-table thead th {
+  width: 17%;
+}
+
+.retrieval-table thead th:first-child {
+  width: 32%;
+}
+
+.retrieval-table thead th > span {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.retrieval-table .retrieval-method-status {
+  color: #497081;
+  margin-top: 5px;
+}
+
+.retrieval-table tbody th {
+  background: transparent;
+  color: #182b3c;
+  font-weight: 400;
+}
+
+.retrieval-table tbody th code {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.retrieval-table tbody th p {
+  margin: 5px 0 0;
+  color: #587183;
+  font-size: 12px;
+}
+
+.retrieval-selected-row {
+  background: #eef8f8;
+}
+
+.retrieval-score {
+  display: block;
+  margin-top: 3px;
+  color: #587183;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+.retrieval-missing {
+  color: #657d8e;
+  font-size: 12px;
+}
+
+.retrieval-sources h3,
+.retrieval-models h3 {
+  font-size: 14px;
+  margin: 18px 0 9px;
+}
+
+.retrieval-sources blockquote {
+  margin: 8px 0;
+  padding: 10px 13px;
+  background: #f1f6f8;
+  border-left: 3px solid #7397ac;
+  font-size: 13px;
+}
+
+.retrieval-sources blockquote strong {
+  overflow-wrap: anywhere;
+}
+
+.retrieval-sources blockquote p {
+  margin: 5px 0 0;
+  white-space: pre-wrap;
+}
+
+.retrieval-model-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.retrieval-model-list > div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.retrieval-calls {
+  padding: 0;
+  margin: 10px 0 0;
+  list-style: none;
+}
+
+.retrieval-calls li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px 18px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 7px 0;
+  border-top: 1px solid #e3ebf0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.retrieval-calls li > span:last-child {
+  color: #657d8e;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .retrieval-comparison {
+    padding: 12px;
+  }
+
+  .retrieval-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}

@@ -10,7 +10,7 @@ import urllib.request
 import urllib.error
 import uuid
 
-p=argparse.ArgumentParser(); p.add_argument('--url',required=True); p.add_argument('--live',action='store_true'); p.add_argument('--resolve',help='Diagnostic IP from verified authoritative DNS; retains TLS hostname/certificate verification'); args=p.parse_args()
+p=argparse.ArgumentParser(); p.add_argument('--url',required=True); p.add_argument('--live',action='store_true'); p.add_argument('--enhanced',action='store_true',help='Assert real Dense/Hybrid/Reranker traces in the three short live examples'); p.add_argument('--resolve',help='Diagnostic IP from verified authoritative DNS; retains TLS hostname/certificate verification'); args=p.parse_args()
 BASE=args.url.rstrip('/')
 if not (BASE.startswith('http://127.0.0.1:') or BASE.startswith('https://clinical-qc-public-demo.')): raise SystemExit('Unexpected deployment target')
 if args.resolve:
@@ -28,7 +28,7 @@ class Client:
     def call(self,path,data=None,expected=200,csrf=None):
         headers={'User-Agent':'ClinicalQCDeploymentCheck/1.0','Origin':BASE,'Content-Type':'application/json','X-QC-CSRF':self.csrf if csrf is None else csrf}
         request=urllib.request.Request(BASE+path,data=None if data is None else json.dumps(data).encode(),headers=headers)
-        try: response=self.opener.open(request,timeout=80)
+        try: response=self.opener.open(request,timeout=110)
         except urllib.error.HTTPError as e: response=e
         body=response.read().decode()
         assert response.status==expected,(path,response.status,body[:700])
@@ -56,6 +56,17 @@ if args.live:
         assert result and result['mode']=='live_cloud' and result['model_call_count']>=1,result
         assert result['status']!='analysis_failed',result.get('error')
         assert result['coverage']['exact_partition'] is True
+        if args.enhanced:
+            trace=result['retrieval_augmented']
+            assert trace['status']=='completed' and trace['used_in']=='decomposition_context'
+            assert result['retrieval_model_call_count']==2
+            assert result['ai_call_count_total']==result['model_call_count']+2
+            assert [c['stage'] for c in trace['calls']]==['embedding','rerank']
+            assert all(c['status']=='completed' for c in trace['calls'])
+            assert set(trace['comparison']['rankings'])=={'bm25','dense','hybrid','hybrid_reranked'}
+            assert [r['id'] for r in trace['selected_rules']]==trace['comparison']['selected_ids']
+            assert not trace['scope']['family_filter_before_ranking']
+            assert len(trace['scope']['eligible_rule_ids'])==6
         b.call('/api/jobs/'+jid,expected=404); b.call('/api/jobs/'+jid+'/export',expected=404)
         assert a.call('/api/jobs',body)['id']==jid
         issue=result['issues'][0]; f=issue['findings'][0] if issue['findings'] else None
@@ -75,5 +86,8 @@ if args.live:
         if cid=='DEMO-BOUNDARY-01': assert issue['status']=='no_finding_for_checked_rule'
         print(json.dumps({'case':cid,'status':result['status'],'issues':len(result['issues']),
             'elapsed_ms':result['elapsed_ms'],'model_calls':result['model_call_count'],
+            'retrieval_status':result.get('retrieval_augmented',{}).get('status'),
+            'retrieval_model_calls':result.get('retrieval_model_call_count',0),
+            'ai_calls_total':result.get('ai_call_count_total',result['model_call_count']),
             'usage':[c.get('usage') for c in result['model_calls']], 'persisted_review':True},ensure_ascii=False),flush=True)
     print('PASS: live cloud AI, 27/30-minute boundary, two issues, evidence, review append/reopen, immutable initial result, foreign access denied')

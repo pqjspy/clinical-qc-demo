@@ -52,7 +52,7 @@ class Tests(unittest.TestCase):
                 if fail_draft: raise TimeoutError()
                 result={'I1':'同一份样本记录的采血和离心间隔为27分钟[I1-F2]，低于至少30分钟的合成规则要求[I1-R1]，需人工复核。'}
             return {'model':model,'choices':[{'finish_reason':'stop','message':{'role':'assistant','content':json.dumps(result)}}]}
-        out=asyncio.run(analyze(record,'test',chat))
+        out=asyncio.run(analyze(record,'test',chat,enhanced_retrieval=False))
         self.assertEqual(len(calls),2)
         return out
 

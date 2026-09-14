@@ -1,0 +1,207 @@
+{
+  "schema_version": "retrieval-evaluation-v2",
+  "synthetic": true,
+  "authorship": {
+    "created_on": "2026-09-14",
+    "author": "Codex; newly authored synthetic retrieval queries",
+    "basis": "Rule quotations and applicability contracts in this repository; no real patient data, prior case answers, runtime histories, or model outputs used to author queries or labels.",
+    "independence_limit": "New queries are separate from earlier demonstration cases, but labels were authored with access to the same tiny rule corpus. They are not independently adjudicated clinical ground truth."
+  },
+  "split_policy": {
+    "frozen_before_model_run": true,
+    "dev_query_ids": ["SYN-RET2-001", "SYN-RET2-002", "SYN-RET2-003", "SYN-RET2-004", "SYN-RET2-005", "SYN-RET2-006"],
+    "eval_query_ids": ["SYN-RET2-007", "SYN-RET2-008", "SYN-RET2-009", "SYN-RET2-010", "SYN-RET2-011", "SYN-RET2-012", "SYN-RET2-013", "SYN-RET2-014", "SYN-RET2-015", "SYN-RET2-016", "SYN-RET2-017", "SYN-RET2-018"],
+    "policy": "Use dev only for configuration selection; report all 12 eval queries, including failures and the no-target case. Any label/query/split revision requires a new dataset version and a fresh stated evaluation."
+  },
+  "corpus": {
+    "path": "data/knowledge/rules.json",
+    "sha256": "e83c328ff38bdfe55d3a8e206f36502f0ed449cf27ed73f31bb6c45dc56864b9",
+    "rule_count": 9,
+    "document_unit": "rule.source.quote",
+    "reference_id_format": "Rule.key = rule_id + '@' + version",
+    "applicability": "Exact study_id, site_id, protocol_id and effective_from <= event_at < effective_to when an end exists; filter before ranking.",
+    "runtime_exclusion": "reference_ids, rationale, style, families and split are offline evaluation metadata; never include them in embedding, reranker or QC prompts, or in the runtime cloud bundle."
+  },
+  "queries": [
+    {
+      "query_id": "SYN-RET2-001",
+      "split": "dev",
+      "style": "literal",
+      "families": ["PK"],
+      "text": "【合成检索问题】查找同一PK样本采血到开始离心的最小时间间隔条款，并确认恰好30分钟如何处理。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-07-07T09:30:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-PK-001@1"],
+      "rationale": "询问v1同一样本的时间下限与边界，对应PK条款；检索相关不等于确认违规。"
+    },
+    {
+      "query_id": "SYN-RET2-002",
+      "split": "dev",
+      "style": "literal",
+      "families": ["VISIT"],
+      "text": "【合成检索问题】第28天访视允许提前和延后几天？需要包含锚点作为第1天、窗口端点是否包含的规定。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-07-08T10:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-VISIT-001@1"],
+      "rationale": "日号定义和允许日期范围都在访视窗口条款。"
+    },
+    {
+      "query_id": "SYN-RET2-003",
+      "split": "dev",
+      "style": "literal",
+      "families": ["AE"],
+      "text": "【合成检索问题】检索不良事件漏记条款：事件发生、完整核对登记册、条目不存在这三项是否必须同时明确？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-07-09T11:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-AE-001@1"],
+      "rationale": "这三项是虚拟AE登记缺失检查的证据条件。"
+    },
+    {
+      "query_id": "SYN-RET2-004",
+      "split": "dev",
+      "style": "literal",
+      "families": ["DRUG"],
+      "text": "【合成检索问题】试验用药期末应有库存怎样由期初、入库、发放和确认退回可用库存计算？缺少一项数量能按0吗？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-07-10T16:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-DRUG-001@1"],
+      "rationale": "同一库存口径的五项数量和缺失值处理属于药品账物核对条款。"
+    },
+    {
+      "query_id": "SYN-RET2-005",
+      "split": "dev",
+      "style": "literal",
+      "families": ["ROLE"],
+      "text": "【合成检索问题】找出人员操作授权的规定：核对同一操作人、授权操作清单，以及包含生效时点但不包含结束时点的有效区间。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-07-13T13:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-ROLE-001@1"],
+      "rationale": "操作身份、范围和时效都由授权条款约束。"
+    },
+    {
+      "query_id": "SYN-RET2-006",
+      "split": "dev",
+      "style": "literal",
+      "families": ["EDC"],
+      "text": "【合成检索问题】原始记录与EDC数据不一致检查需要先对齐哪些信息？同一受试者、字段、采集时点和单位后怎样比较两侧值？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-07-14T14:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-EDC-001@1"],
+      "rationale": "询问原始资料与电子采集系统的字段对齐和精确值比较。"
+    },
+    {
+      "query_id": "SYN-RET2-007",
+      "split": "eval",
+      "style": "paraphrase",
+      "families": ["PK"],
+      "text": "【合成检索问题】一支研究血管上午09:06取好，09:27就进了分离机器。两处标签确认是同一管；应查哪条要求判断这段等待够不够？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-04T09:27:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-PK-001@1"],
+      "rationale": "以取血和机器分离的转述表达同一样本的处理间隔问题；未复用现有案例。"
+    },
+    {
+      "query_id": "SYN-RET2-008",
+      "split": "eval",
+      "style": "paraphrase",
+      "families": ["VISIT"],
+      "text": "【合成检索问题】首次到院那天算第一日，约在第四周的那次复诊实际拖到了第三十六日。请找出允许的最早、最晚到院日和计日办法。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-05T10:15:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-VISIT-001@1"],
+      "rationale": "以复诊、第四周和到院日描述访视窗口；只标记检索所需规则。"
+    },
+    {
+      "query_id": "SYN-RET2-009",
+      "split": "eval",
+      "style": "paraphrase",
+      "families": ["AE"],
+      "text": "【合成检索问题】随访纸上已经写下受试者曾有一次不适，但负责记录的人还没把安全性台账从头核查完。此时能说忘了登记吗，需要哪项书面依据？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-06T11:20:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-AE-001@1"],
+      "rationale": "安全性台账尚未完整核对是AE漏记条款的证据不足情形；相关性不要求规则命中。"
+    },
+    {
+      "query_id": "SYN-RET2-010",
+      "split": "eval",
+      "style": "paraphrase",
+      "families": ["DRUG"],
+      "text": "【合成检索问题】研究药盒月初有18盒，新到12盒，给出9盒，收回的4盒仍封存在待处理区。架上实数对不上时，哪些收回品可以加回余额？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-07T15:45:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-DRUG-001@1"],
+      "rationale": "用药盒收支与货架余额转述库存平衡，待处理回收品不能默认是已确认可用的退回库存。"
+    },
+    {
+      "query_id": "SYN-RET2-011",
+      "split": "eval",
+      "style": "paraphrase",
+      "families": ["ROLE"],
+      "text": "【合成检索问题】委派表上某人的任务许可到下午三点截止，他恰在三点整完成该任务。名字和任务都一致；哪条规定能说明截止那一刻还算不算许可期？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-10T15:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-ROLE-001@1"],
+      "rationale": "委派与任务许可是人员操作授权的转述，询问半开有效区间。"
+    },
+    {
+      "query_id": "SYN-RET2-012",
+      "split": "eval",
+      "style": "paraphrase",
+      "families": ["EDC"],
+      "text": "【合成检索问题】纸质测量单写72，电子采集页面填成27；已核实是同一个人同次测量的同一项目，量纲也相同。查哪个条款支持这类双边核对？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-11T09:50:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-EDC-001@1"],
+      "rationale": "纸单与电子页面的同一字段不同值对应原始记录和EDC比较条款；未指定哪侧正确。"
+    },
+    {
+      "query_id": "SYN-RET2-013",
+      "split": "eval",
+      "style": "multi_rule",
+      "families": ["PK", "EDC"],
+      "text": "【合成检索问题】同一PK管的采血到离心只有24分钟；另一个已对齐的测量字段，原始表与EDC录入值又不同。请把这两个问题各自的检查依据都找出来。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-12T10:24:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-PK-001@1", "SYN-RULE-EDC-001@1"],
+      "rationale": "分别请求样本处理间隔与对齐字段值比较的两个规则，二者均为二元相关。"
+    },
+    {
+      "query_id": "SYN-RET2-014",
+      "split": "eval",
+      "style": "multi_rule",
+      "families": ["DRUG", "ROLE"],
+      "text": "【合成检索问题】试验药数量按收支算出的余额与盘点不符，同时实际发药人的名字和授权表上的人不是同一个。需要找齐库存核算和人员操作权限两方面的条款。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-13T16:30:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-DRUG-001@1", "SYN-RULE-ROLE-001@1"],
+      "rationale": "库存余额与人员身份授权是两个独立的检索目标，均在v1适用范围。"
+    },
+    {
+      "query_id": "SYN-RET2-015",
+      "split": "eval",
+      "style": "multi_rule",
+      "families": ["AE", "VISIT"],
+      "text": "【合成检索问题】请同时查询两件事：已经完整核查的不良事件册没有那次已发生事件的条目；计划第四周来院的访视到了第37天才做。每件事应参考什么规定？",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-08-14T11:10:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-AE-001@1", "SYN-RULE-VISIT-001@1"],
+      "rationale": "明确询问登记缺失和访视日范围；需要同时检索两条，不以首条命中替代完整召回。"
+    },
+    {
+      "query_id": "SYN-RET2-016",
+      "split": "eval",
+      "style": "version_boundary",
+      "families": ["PK"],
+      "text": "【合成检索问题】方案更新生效后，同一PK样本从取血到启动离心只等了22分钟。查当前适用的最小间隔，旧资料还写着30分钟。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v2", "event_at": "2026-10-01T00:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-PK-001@2"],
+      "rationale": "v2恰在此时生效且只提供PK条款，适用候选仅PK@2；旧版本应在排序前被过滤。此问题主要检查适用范围，不能据此声称排序能力提升。"
+    },
+    {
+      "query_id": "SYN-RET2-017",
+      "split": "eval",
+      "style": "version_boundary",
+      "families": ["PK"],
+      "text": "【合成检索问题】这是旧版方案结束前的最后一秒，材料在提醒下一版将改成20分钟。要核对本次同一血样采集至离心的等待要求，应找到当时仍生效的条款。",
+      "context": {"study_id": "SYN-STUDY-001", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-001-v1", "event_at": "2026-09-30T23:59:59+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": ["SYN-RULE-PK-001@1"],
+      "rationale": "v1有效期为左闭右开，结束前一秒仍适用PK@1；查询里的新版数字不应改变显式研究方案和日期上下文。"
+    },
+    {
+      "query_id": "SYN-RET2-018",
+      "split": "eval",
+      "style": "no_applicable_study",
+      "families": ["PK"],
+      "text": "【合成检索问题】另一个虚构研究也想查PK采血至离心需要等多久。请仅按本次研究和方案范围找条款，不能借用别的研究规定。",
+      "context": {"study_id": "SYN-STUDY-UNLISTED", "site_id": "SYN-SITE-A", "protocol_id": "SYN-PROTOCOL-UNLISTED-v1", "event_at": "2026-08-17T09:00:00+08:00", "timezone": "Asia/Shanghai"},
+      "reference_ids": [],
+      "rationale": "知识库没有此研究/方案的规则，应得到空适用候选集。单独报告无目标行为，不纳入Recall、MRR或nDCG分母。"
+    }
+  ]
+}

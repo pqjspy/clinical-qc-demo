@@ -11,7 +11,7 @@ DEST = HERE / 'src' / 'core'
 DEST.mkdir(parents=True, exist_ok=True)
 (DEST / '__init__.py').write_text('')
 hashes = {}
-for name in ('contracts.py', 'data.py', 'retrieval.py', 'm4_engine.py'):
+for name in ('contracts.py', 'data.py', 'retrieval.py', 'hybrid_retrieval.py', 'm4_engine.py'):
     path = ROOT / 'src' / 'clinical_qc_demo' / name
     hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
     shutil.copyfile(path, DEST / name)
@@ -28,6 +28,9 @@ knowledge = {k: json.loads((ROOT / 'data' / 'knowledge' / (k + '.json')).read_te
              for k in ('taxonomy', 'protocols', 'rules')}
 cases = json.loads((ROOT / 'data' / 'inputs' / 'cases.json').read_text())['records']
 assert len(cases) == 12 and all(c['text'].startswith('【合成虚拟记录】') for c in cases)
-payload = dict(knowledge=knowledge, cases=cases, implementation_sha256=hashes, routing_prompt=prompt)
+cloud_hashes = {name: hashlib.sha256((HERE/'src'/name).read_bytes()).hexdigest()
+                for name in ('cloud_flow.py', 'semantic_retrieval.py', 'entry.py', 'review.py')}
+payload = dict(knowledge=knowledge, cases=cases, implementation_sha256=hashes,
+               cloud_implementation_sha256=cloud_hashes, routing_prompt=prompt)
 (HERE / 'src' / 'bundled.py').write_text('import json\nBUNDLE = json.loads(' + repr(json.dumps(payload, ensure_ascii=False)) + ')\n')
 print(f'Bundled {len(cases)} synthetic examples, {len(knowledge["rules"]["rules"])} rule versions; no accounts/history/answers.')

@@ -1,3 +1,4 @@
+import RetrievalComparison from "./RetrievalComparison";
 import { useState, useEffect, useRef } from "react";
 type Data = Record<string, any>;
 type RecordInput = {
@@ -37,6 +38,7 @@ const labels: Record<string, string> = {
 };
 const stages: Record<string, string> = {
   load_validated_knowledge: "核验规则快照",
+  hybrid_rule_retrieval: "正在进行向量检索、融合和重排",
   local_model_preflight: "检查云端模型",
   qwen_extract_verbatim_evidence: "Qwen 正在抽取原文事实",
   validate_evidence_and_normalize: "核对原文与时间",
@@ -298,7 +300,7 @@ export default function App() {
     const saved = cases.find((c) => c.case_id === form.case_id);
     if (JSON.stringify(saved) !== JSON.stringify(form))
       throw Error("原文或上下文已改变，请先“另存为新记录”，再分析。");
-    setMessage('云端正在拆分问题并生成解释，通常需要几秒到几十秒。请保持页面打开；不会自动重试。');
+    setMessage('云端正在检索、重排、拆分问题并生成解释，通常需要几秒到几十秒。请保持页面打开；不会自动重试。');
     const j = await api("/jobs", { case_id: form.case_id, request_key: uid() });
     setMessage('分析已保存。请核对证据和 AI 解释草稿。');
     await openJob(j.id);
@@ -415,9 +417,9 @@ export default function App() {
         </section>
         <section className="panel"><h2>这个版本如何工作？</h2>
           <ol><li>选择 PK、访视、AE、库存、授权或 EDC 示例，也可编辑后另存。</li>
-          <li>真正调用云端 Qwen，显示程序计算与原文、规则证据。</li>
+          <li>比较BM25、BGE-M3向量、RRF融合和BGE重排；将候选规则交给Qwen参考，程序独立检查。</li>
           <li>逐项复核、保存修改，重新打开比较 AI 初判与人工版本。</li></ol>
-          <p className="muted">每位访客每天最多 6 次，全站每天最多 40 次分析（UTC 日切）；云端免费额度也可能提前用尽，届时暂停，不转付费。单条最多 2400 字。</p>
+          <p className="muted">每位访客每天最多 6 次，全站每天最多 40 次分析（UTC 日切）；云端免费额度也可能提前用尽，届时暂停，不转付费。单条最多 2400 字；256字以内启用四路检索比较，长记录明确保留原有BM25流程，不截断原文。</p>
           <p className="muted">访客空间不要求注册，仅限此浏览器访问；凭证有效期 7 天。清除浏览器 Cookie 或过期后无法恢复旧记录，请及时导出。复核按钮仅演示流程，不代表专业身份验证或医学签字。</p>
         </section>
       </div>
@@ -599,7 +601,7 @@ export default function App() {
                       <span className="spinner" />
                       {stages[detail.job.stage] || detail.job.stage}
                       <p className="muted">
-                        抽取事实和组织解释分别调用模型，请稍候。不会自动换成预设答案。
+                        短记录另调用BGE-M3向量模型及BGE重排模型；Qwen负责分组与解释，不会自动换成预设答案。
                       </p>
                     </div>
                   )}
@@ -617,6 +619,7 @@ export default function App() {
                         <strong>本次分析实际使用的原文</strong>
                         <p>{highlight(result.input.text)}</p>
                       </div>
+                      <RetrievalComparison trace={result.retrieval_augmented} />
                       {result.issues?.length > 0 && (
                         <div className="sectionbreak">
                           <h3>逐项检查（{result.issues.length} 项）</h3>
@@ -791,7 +794,8 @@ export default function App() {
                         )}
                         {writable ? (
                           <>
-                            {result.issues?.length > 0 && (
+                            <RetrievalComparison trace={result.retrieval_augmented} />
+                      {result.issues?.length > 0 && (
                               <label>
                                 选择需要复核的问题项
                                 <select
